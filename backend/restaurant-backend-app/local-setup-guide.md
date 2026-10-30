@@ -102,9 +102,12 @@ Create a Python virtual environment and install the deployment tooling.
 
 ### 4.1 Create and activate a virtual environment
 
+The project uses Python 3.12 (pinned in `.python-version`).
+
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+py install 3.12   # if Python 3.12 is not installed yet
+py -V:3.12 -m venv syndicate_venv
+.\syndicate_venv\Scripts\Activate.ps1
 ```
 
 ### 4.2 Install AWS Syndicate

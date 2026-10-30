@@ -487,3 +487,4 @@ $RECYCLE.BIN/
 export/
 
 .venv/
+syndicate_venv/

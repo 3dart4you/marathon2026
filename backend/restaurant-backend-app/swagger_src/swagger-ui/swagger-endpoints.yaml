@@ -7,7 +7,7 @@ info:
     name: API Support
 
 servers:
-  - url: https://eknqcvq3l1.execute-api.us-west-2.amazonaws.com/develop
+  - url: https://ikijw6mxaa.execute-api.us-east-2.amazonaws.com/develop
     description: Production environment
 
 tags:
