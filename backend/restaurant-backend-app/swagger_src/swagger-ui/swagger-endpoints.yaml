@@ -278,8 +278,13 @@ paths:
     get:
       tags:
         - Guest Sessions
-      summary: Get all sessions for group reservation
-      description: Retrieves all guest sessions for a group reservation
+      summary: Get all participant sessions for a group reservation (owner only)
+      description: >-
+        Returns every participant session of the group pre-order with each participant's items and total,
+        plus the overall total. Only the reservation owner (Cognito user whose sub equals the parent
+        reservation's customerId) may call it. Works for any group status. The owner's session is listed
+        first with type Owner. Items whose dish no longer exists are skipped. An empty group returns
+        participants [] and total 0.
       operationId: getAllSessionsForGroup
       parameters:
         - name: groupReservationId
@@ -298,13 +303,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAllSessionsResponse'
         '400':
-          description: Invalid request - missing groupReservationId
+          description: Missing groupReservationId path parameter or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing or invalid Cognito claims
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Caller is not the reservation owner
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
-          description: Group reservation not found or GroupId is required
+          description: Group reservation or parent reservation not found
           content:
             application/json:
               schema:
@@ -434,8 +451,12 @@ paths:
     delete:
       tags:
         - Guest Sessions
-      summary: Delete guest session
-      description: Deletes a guest session from a group reservation
+      summary: Delete guest session (owner only)
+      description: >-
+        Deletes a guest session from a group reservation. Only the reservation owner (Cognito user whose
+        sub equals the parent reservation's customerId) may call it. Returns the remaining participant
+        sessions of the group in the same shape as GET /guest/groups/{groupReservationId}/sessions
+        (owner session first with type Owner; items whose dish no longer exists are skipped).
       operationId: deleteGuestSession
       parameters:
         - name: groupReservationId
@@ -454,26 +475,33 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: Guest session deleted successfully
+          description: Guest session deleted successfully; returns the remaining sessions of the group
           content:
             application/json:
               schema:
-                type: object
-                description: Updated snapshot of the group reservation
+                $ref: '#/components/schemas/GetAllSessionsResponse'
         '400':
-          description: Invalid request - missing required path parameters
+          description: >-
+            Missing groupReservationId or guestSessionId path parameter, or validation error
+            (guest session does not belong to this group reservation)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
-          description: Unauthorized
+          description: Unauthorized - missing or invalid Cognito claims
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Caller is not the reservation owner
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
-          description: Group reservation or guest session not found
+          description: Group reservation, parent reservation or guest session not found
           content:
             application/json:
               schema:
@@ -686,28 +714,12 @@ components:
     OrderItemResponse:
       type: object
       properties:
-        dishId:
-          type: string
-          description: The ID of the dish
-          example: dish-123
-        dishName:
-          type: string
-          description: Name of the dish
-          example: Spaghetti Carbonara
+        dish:
+          $ref: '#/components/schemas/DishResponse'
         quantity:
           type: integer
           description: Quantity ordered
           example: 2
-        price:
-          type: number
-          format: decimal
-          description: Price per unit
-          example: 22.50
-        total:
-          type: number
-          format: decimal
-          description: Total price for this item
-          example: 45.00
 
     GetGroupInviteTokenResponse:
       type: object

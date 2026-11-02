@@ -1188,22 +1188,97 @@ Response: 200 OK
 ```
 
 ### `GET` /guest/groups/{groupReservationId}/sessions
-Response: 200 OK
-```json
-[
-  {
-    "id": "string",
-    "groupReservationId": "string",
-    "guestName": "string",
-    "status": "string"
-  }
-]
-```
+Auth: Cognito (`Authorization: Bearer <idToken>`). Only the reservation owner (the user whose `sub` equals the parent reservation's `customerId`) can call it. Works for any group status (Open / Submitted / Closed).
 
-### `DELETE` /guest/groups/{groupReservationId}/sessions/{guestSessionId}
+Returns every participant session of the group pre-order. The owner's session (`type: "Owner"`) is listed first, followed by guest sessions. `dish` is the full dish object (same as other order endpoints). Items whose dish no longer exists are skipped and not counted in totals. Participant `total` = sum of `quantity * dish.price`; top-level `total` = sum of participant totals.
+
 Response: 200 OK
 ```json
 {
-  "message": "Guest session removed from group successfully."
+  "participants": [
+    {
+      "id": "session1",
+      "type": "Guest",
+      "name": "Andrii",
+      "items": [
+        {
+          "dish": {
+            "id": "dish1",
+            "name": "Caesar Salad",
+            "description": "string",
+            "dishType": "string",
+            "price": 180,
+            "weight": "string",
+            "calories": "string",
+            "proteins": "string",
+            "fats": "string",
+            "carbohydrates": "string",
+            "vitamins": "string",
+            "imageUrl": "string",
+            "state": "Available"
+          },
+          "quantity": 2
+        }
+      ],
+      "total": 360,
+      "isSubmitted": true
+    }
+  ],
+  "total": 360
 }
 ```
+Empty group: `{ "participants": [], "total": 0 }`.
+
+Errors:
+- `400` - missing `groupReservationId` path parameter (`{ "error": "..." }`), or a validation error (error-code response).
+- `401` - missing/invalid Cognito claims.
+- `403` - caller is not the reservation owner.
+- `404` - group reservation or parent reservation not found.
+
+### `DELETE` /guest/groups/{groupReservationId}/sessions/{guestSessionId}
+Auth: Cognito (`Authorization: Bearer <idToken>`). Only the reservation owner (the user whose `sub` equals the parent reservation's `customerId`) can call it.
+
+Deletes the guest session and returns the **remaining** participant sessions of the group, in the same shape as `GET /guest/groups/{groupReservationId}/sessions` (owner session with `type: "Owner"` first, items whose dish no longer exists are skipped and not counted in totals).
+
+Response: 200 OK
+```json
+{
+  "participants": [
+    {
+      "id": "ownerSession1",
+      "type": "Owner",
+      "name": "Olena",
+      "items": [
+        {
+          "dish": {
+            "id": "dish1",
+            "name": "Caesar Salad",
+            "description": "string",
+            "dishType": "string",
+            "price": 180,
+            "weight": "string",
+            "calories": "string",
+            "proteins": "string",
+            "fats": "string",
+            "carbohydrates": "string",
+            "vitamins": "string",
+            "imageUrl": "string",
+            "state": "Available"
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 180,
+      "isSubmitted": false
+    }
+  ],
+  "total": 180
+}
+```
+If no sessions remain: `{ "participants": [], "total": 0 }`.
+
+Errors:
+- `400` - missing `groupReservationId` or `guestSessionId` path parameter (`{ "error": "..." }`), or the guest session does not belong to this group reservation (error-code response).
+- `401` - missing/invalid Cognito claims.
+- `403` - caller is not the reservation owner.
+- `404` - group reservation, parent reservation or guest session not found.

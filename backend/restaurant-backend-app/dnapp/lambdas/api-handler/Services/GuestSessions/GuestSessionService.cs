@@ -171,7 +171,15 @@ public class GuestSessionService(
         };
     }
 
-    
+    public async Task<GetAllSessionsResponse> GetGroupSessionsAsync(string userId, string groupReservationId)
+    {
+        await ValidateReservationOwnerAsync(groupReservationId, userId);
+
+        var sessions = await guestSessionRepository.GetAllByGroupReservationIdAsync(groupReservationId);
+
+        return await BuildSessionsResponseAsync(sessions);
+    }
+
     public async Task<GetAllSessionsResponse> DeleteGuestSessionAsync(string userId, string groupReservationId, string guestSessionId)
     {
         await ValidateReservationOwnerAsync(groupReservationId, userId);
@@ -188,32 +196,55 @@ public class GuestSessionService(
 
         var sessions = await guestSessionRepository.GetAllByGroupReservationIdAsync(groupReservationId);
 
-        var dishIds = sessions
-            .SelectMany(s => s.Dishes)
-            .Select(s => s.DishId)
+        return await BuildSessionsResponseAsync(sessions);
+    }
+
+    private async Task<GetAllSessionsResponse> BuildSessionsResponseAsync(IEnumerable<GuestSession>? sessions)
+    {
+        // Owner session goes first; OrderByDescending is stable, so guests keep repository order.
+        var orderedSessions = (sessions ?? [])
+            .OrderByDescending(s => s.IsOwnerSession)
+            .ToArray();
+
+        var dishIds = orderedSessions
+            .SelectMany(s => s.Dishes ?? [])
+            .Select(d => d.DishId)
             .Distinct()
             .ToArray();
 
-        var allDishes = await dishRepository.GetDishesByIdsAsync(dishIds);
-        var dishesById = allDishes.ToDictionary(d => d.Id);
+        var dishesById = new Dictionary<string, Dish>();
+        if (dishIds.Length > 0)
+        {
+            var allDishes = await dishRepository.GetDishesByIdsAsync(dishIds) ?? [];
+            foreach (var dish in allDishes)
+            {
+                if (dish is not null && !string.IsNullOrWhiteSpace(dish.Id))
+                    dishesById[dish.Id] = dish;
+            }
+        }
 
         var participants = new List<Participant>();
 
-        foreach (var guestSession in sessions)
+        foreach (var guestSession in orderedSessions)
         {
-            var items = guestSession.Dishes.Select(d => new OrderItemResponse
-            {
-                Dish = DishMapper.ToDishResponse(dishesById[d.DishId]),
-                Quantity = d.Quantity
-            }).ToArray();
+            // Items whose dish no longer exists are skipped and excluded from the total.
+            var items = (guestSession.Dishes ?? [])
+                .Where(d => dishesById.ContainsKey(d.DishId))
+                .Select(d => new OrderItemResponse
+                {
+                    Dish = DishMapper.ToDishResponse(dishesById[d.DishId]),
+                    Quantity = d.Quantity
+                })
+                .ToArray();
 
             decimal total = items.Sum(i => i.Quantity * i.Dish.Price);
-            var participant = new Participant(guestSession.Id, ParticipantType.Guest, guestSession.GuestName, items, total, guestSession.IsSubmitted);
-            participants.Add(participant);
+            var type = guestSession.IsOwnerSession ? ParticipantType.Owner : ParticipantType.Guest;
+            participants.Add(new Participant(guestSession.Id, type, guestSession.GuestName, items, total, guestSession.IsSubmitted));
         }
 
         return new GetAllSessionsResponse(participants, participants.Sum(p => p.Total));
     }
+
     public async Task SubmitCartAsync(string guestSessionId)
     {
         GuestSession guestSession = await GetGuestSessionAsync(guestSessionId);
