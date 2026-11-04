@@ -527,6 +527,36 @@ Response: `200 OK`
 }
 ```
 
+### `GET` /reservations/{reservationId}/guest-session-id
+Auth: `cognito_authorizer`; the caller must be the reservation owner.
+Returns the owner's guest session of the group pre-order. The session is created on first call (`type: "Owner"` in the group sessions list). Owner sessions are not counted against the guest limit.
+
+Response: `200 OK`
+```json
+{
+  "guestSessionId": "string"
+}
+```
+Errors: `401` no `sub` claim, `403` not the owner, `404` reservation or group pre-order not found.
+
+### `POST` /group-reservations/{groupReservationId}/submit
+Auth: `cognito_authorizer`; the caller must be the reservation owner.
+Consolidates the dishes of every **submitted** participant cart (unsubmitted carts are ignored) into the reservation's pre-order and marks the group as `Submitted`. A new order is created with status `SubmittedByCustomer` (the assigned waiter is notified); if an active order already exists, quantities are merged into it. Allowed only while the group is `Open`, the reservation is `Reserved` and more than 30 minutes before the start time.
+
+Request:
+```json
+{
+  "reservationId": "string"
+}
+```
+Response: `200 OK`
+```json
+[
+  { "dishId": "string", "quantity": 0 }
+]
+```
+Errors: `400` missing/invalid body, reservation does not match the group, empty consolidated order, dish unavailable, past the 30-minute cutoff; `401` no `sub` claim; `403` not the owner; `404` group or reservation not found; `409` group already submitted or expired.
+
 ### `GET` /reservations/{reservationId}/feedback
 Response: `200 OK`
 ```json

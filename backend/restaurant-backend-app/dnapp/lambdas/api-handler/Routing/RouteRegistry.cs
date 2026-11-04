@@ -109,6 +109,7 @@ public static class RouteRegistry
         services.AddSingleton<INotificationService, NotificationService>();
         services.AddSingleton<IOrderService, OrderService>();
         services.AddSingleton<IGroupReservationService, GroupReservationService>();
+        services.AddSingleton<IGroupPreOrderService, GroupPreOrderService>();
         services.AddSingleton<IReservationService, ReservationService>();
         services.AddSingleton<IFeedbackService, FeedbackService>();
         services.AddSingleton<IGuestSessionService, GuestSessionService>();
@@ -195,6 +196,8 @@ public static class RouteRegistry
             new RouteHandler(new Route(HttpMethods.GET, "/guest/groups/{groupReservationId}/sessions"), ActivatorUtilities.CreateInstance<GetGroupSessionsHandler>(provider)),
             new RouteHandler(new Route(HttpMethods.GET, "/guest/invites/{token}"), ActivatorUtilities.CreateInstance<GetGroupReservationHandler>(provider)),
             new RouteHandler(new Route(HttpMethods.GET, "/reservations/{reservationId}/invite-token"), ActivatorUtilities.CreateInstance<GetInviteTokenHandler>(provider)),
+            new RouteHandler(new Route(HttpMethods.GET, "/reservations/{reservationId}/guest-session-id"), ActivatorUtilities.CreateInstance<GetOwnerSessionIdHandler>(provider)),
+            new RouteHandler(new Route(HttpMethods.POST, "/group-reservations/{groupReservationId}/submit"), ActivatorUtilities.CreateInstance<SubmitGroupPreOrderHandler>(provider)),
             new RouteHandler(new Route(HttpMethods.DELETE, "/guest/groups/{groupReservationId}/sessions/{guestSessionId}"), ActivatorUtilities.CreateInstance<DeleteGuestSessionHandler>(provider))
         ];
         List<RouteHandler> GetAuxiliaryRoutes() => [

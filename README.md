@@ -150,6 +150,16 @@ For an incremental update instead of a full deploy, run the matching command for
 syndicate update
 ```
 
+### Seed tables and waiters
+
+A fresh deploy has no tables and no waiters, so "Find a Table" shows nothing and booking fails. After the first deploy, seed 6 tables and one waiter account per location (safe to re-run):
+
+```powershell
+.\syndicate_venv\Scripts\python.exe scripts\seed_tables_waiters.py "<waiter password>"
+```
+
+Waiters log in as `waiter.<street>@example.com` (e.g. `waiter.rustaveli@example.com`) with the password you pass. Customers create their own accounts through Sign Up.
+
 ## 3. Deploy the frontend
 
 This section describes the manual deployment flow. It does not use GitHub Actions.
