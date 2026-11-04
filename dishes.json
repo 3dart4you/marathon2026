@@ -1,0 +1,164 @@
+{
+  "Dishes": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "15673599-3a6f-44fc-8b76-e64f2f4f2ce3" },
+          "name": { "S": "Grilled Salmon 2" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "18.99" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "320 g" },
+          "description": { "S": "Fresh salmon fillet with lemon butter sauce and seasonal vegetables." },
+          "calories": { "S": "540 kcal" },
+          "proteins": { "S": "34 g" },
+          "Fats": { "S": "28 g" },
+          "carbohydrates": { "S": "22 g" },
+          "vitamins": { "S": "Vitamin D, Vitamin B12, Omega-3" },
+		  "locationId": { "S": "7d598da3-0887-4a04-a3a1-fe26d8a4a4f2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "95f0b087-4128-428f-bd3c-cc3353471e75" },
+          "name": { "S": "Truffle Mushroom Risotto" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "22.5" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "350g" },
+          "description": { "S": "Creamy arborio rice cooked with wild mushrooms and truffle oil." },
+          "calories": { "S": "620 kcal" },
+          "proteins": { "S": "14g" },
+          "Fats": { "S": "28g" },
+          "carbohydrates": { "S": "65g" },
+          "vitamins": { "S": "Vitamin D, Iron" },
+		  "locationId": { "S": "7d598da3-0887-4a04-a3a1-fe26d8a4a4f2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "3a6058ab-493f-4dc7-b2df-3a492be1268d" },
+          "name": { "S": "Green Salad" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "9.99" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "220g" },
+          "description": { "S": "Fresh vegetable salad" },
+          "calories": { "S": "180" },
+          "proteins": { "S": "4g" },
+          "fats": { "S": "8g" },
+          "carbohydrates": { "S": "20g" },
+          "vitamins": { "S": "A, C, K" },
+		  "locationId": { "S": "7d598da3-0887-4a04-a3a1-fe26d8a4a4f2" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "1862cae4-8538-4905-92ca-7c849c701b3c" },
+          "name": { "S": "Margherita Pizza" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "14.99" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "450 g" },
+          "description": { "S": "Classic pizza with tomato sauce, mozzarella, and basil." },
+          "calories": { "S": "980 kcal" },
+          "proteins": { "S": "36 g" },
+          "fats": { "S": "28 g" },
+          "carbohydrates": { "S": "120 g" },
+          "vitamins": { "S": "A, B12, C" },
+		  "locationId": { "S": "2de08053-9bec-4662-bf56-2ccb70aeeb78" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "b370f005-6ae3-4eab-b38d-0ba54558e198" },
+          "name": { "S": "Fresh Avocado Toast" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "12" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "200g" },
+          "description": { "S": "Smashed avocado on sourdough with cherry tomatoes and chili flakes." },
+          "calories": { "S": "320 kcal" },
+          "proteins": { "S": "8g" },
+          "fats": { "S": "18g" },
+          "carbohydrates": { "S": "30g" },
+          "vitamins": { "S": "Vitamin C, Potassium" },
+		  "locationId": { "S": "2de08053-9bec-4662-bf56-2ccb70aeeb78" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "07efc9a8-e9fc-4612-9e80-59fda0dc7fc3" },
+          "name": { "S": "Grilled Salmon" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "18.99" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "320 g" },
+          "description": { "S": "Fresh salmon fillet with lemon butter sauce and seasonal vegetables." },
+          "calories": { "S": "540 kcal" },
+          "proteins": { "S": "34 g" },
+          "fats": { "S": "28 g" },
+          "carbohydrates": { "S": "22 g" },
+          "vitamins": { "S": "Vitamin D, Vitamin B12, Omega-3" },
+		  "locationId": { "S": "2de08053-9bec-4662-bf56-2ccb70aeeb78" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "d2d165f7-4259-4a13-93cd-d20715e7d130" },
+          "name": { "S": "Margherita Pizza" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "14.99" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "450 g" },
+          "description": { "S": "Classic pizza with tomato sauce, mozzarella, and basil." },
+          "calories": { "S": "980 kcal" },
+          "proteins": { "S": "36 g" },
+          "fats": { "S": "28 g" },
+          "carbohydrates": { "S": "120 g" },
+          "vitamins": { "S": "A, B12, C" },
+		  "locationId": { "S": "98c4acc4-ca8b-4416-be9d-ef40f1e73e0a" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "3c8207b9-945a-4a42-a4bc-5dad3eb3d992" },
+          "name": { "S": "Grilled Salmon" },
+          "imageUrl": { "NULL": true },
+          "price": { "N": "18.99" },
+          "state": { "N": "1" },
+		  "dishType": { "N": "1" },
+          "weight": { "S": "320 g" },
+          "description": { "S": "Fresh salmon fillet with lemon butter sauce and seasonal vegetables." },
+          "calories": { "S": "540 kcal" },
+          "proteins": { "S": "34 g" },
+          "fats": { "S": "28 g" },
+          "carbohydrates": { "S": "22 g" },
+          "vitamins": { "S": "Vitamin D, Vitamin B12, Omega-3" },
+		  "locationId": { "S": "98c4acc4-ca8b-4416-be9d-ef40f1e73e0a" }
+        }
+      }
+    }
+  ]
+}

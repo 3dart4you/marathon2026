@@ -1,0 +1,43 @@
+{
+  "Locations": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "7d598da3-0887-4a04-a3a1-fe26d8a4a4f2" },
+          "address": { "S": "9 Abashidze Street" },
+          "description": { "S": "Set in an upscale, trendy district, this chic venue specializes in modern fusion cuisine, featuring a minimalist interior and a vibrant evening atmosphere." },
+          "totalCapacity": { "N": "2" },
+          "averageOccupancy": { "S": "90%" },
+          "imageUrl": { "S": "https://restaurant-backend-dev-images-747482682250.s3.us-west-2.amazonaws.com/assets/img/locations/location_7d598da3-0887-4a04-a3a1-fe26d8a4a4f2" },
+          "rating": { "N": "0" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "2de08053-9bec-4662-bf56-2ccb70aeeb78" },
+          "address": { "S": "14 Baratashvili Street" },
+          "description": { "S": "Nestled near the historic city walls, this cozy spot blends traditional brickwork with modern design, offering a warm dining experience just steps from the old town." },
+          "totalCapacity": { "N": "6" },
+          "averageOccupancy": { "S": "70%" },
+          "imageUrl": { "S": "https://restaurant-backend-dev-images-747482682250.s3.us-west-2.amazonaws.com/assets/img/locations/location_2de08053-9bec-4662-bf56-2ccb70aeeb78" },
+          "rating": { "N": "0" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "98c4acc4-ca8b-4416-be9d-ef40f1e73e0a" },
+          "address": { "S": "48 Rustaveli Avenue" },
+          "description": { "S": "Located on the city's bustling main cultural artery, this grand establishment features classic high ceilings and a wide outdoor terrace perfect for people-watching." },
+          "totalCapacity": { "N": "2" },
+          "averageOccupancy": { "S": "85%" },
+          "imageUrl": { "S": "https://restaurant-backend-dev-images-747482682250.s3.us-west-2.amazonaws.com/assets/img/locations/location_98c4acc4-ca8b-4416-be9d-ef40f1e73e0a" },
+          "rating": { "N": "0" }
+        }
+      }
+    }
+  ]
+}
